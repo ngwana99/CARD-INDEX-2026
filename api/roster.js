@@ -1,6 +1,6 @@
 const { createClient } = require('@supabase/supabase-js');
 
-// camelCase form field -> snake_case Postgres column
+// snake_case Postgres column -> camelCase form field
 const COLUMN_MAP = {
   fullName: 'full_name', matNo: 'mat_no', dob: 'dob', pob: 'pob', sex: 'sex',
   maritalStatus: 'marital_status', ethnicGroup: 'ethnic_group', firstLanguage: 'first_language',
@@ -15,15 +15,21 @@ const COLUMN_MAP = {
   divisionRedeployment: 'division_redeployment', subdivisionRedeployment: 'subdivision_redeployment',
 };
 
-function toRow(data) {
-  const row = {};
-  Object.entries(COLUMN_MAP).forEach(([camel, col]) => { row[col] = data[camel] ?? ''; });
-  return row;
+function fromRow(row) {
+  const data = { id: row.id, submittedAt: row.submitted_at };
+  Object.entries(COLUMN_MAP).forEach(([camel, col]) => { data[camel] = row[col] ?? ''; });
+  return data;
 }
 
 module.exports = async (req, res) => {
-  if (req.method !== 'POST') {
+  if (req.method !== 'GET') {
     res.status(405).json({ error: 'Method not allowed' });
+    return;
+  }
+
+  const code = (req.query && req.query.code) || '';
+  if (!process.env.ADMIN_ACCESS_CODE || code !== process.env.ADMIN_ACCESS_CODE) {
+    res.status(401).json({ error: 'Incorrect access code' });
     return;
   }
 
@@ -34,22 +40,14 @@ module.exports = async (req, res) => {
 
   const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
 
-  let body = req.body;
-  if (typeof body === 'string') { try { body = JSON.parse(body); } catch { body = {}; } }
-  const { id, ...fields } = body || {};
-  const row = toRow(fields);
-
   try {
-    if (id) {
-      const { error } = await supabase.from('card_index_submissions').update(row).eq('id', id);
-      if (error) throw error;
-      res.status(200).json({ id });
-    } else {
-      const { data, error } = await supabase.from('card_index_submissions').insert(row).select('id').single();
-      if (error) throw error;
-      res.status(200).json({ id: data.id });
-    }
+    const { data, error } = await supabase
+      .from('card_index_submissions')
+      .select('*')
+      .order('submitted_at', { ascending: true });
+    if (error) throw error;
+    res.status(200).json((data || []).map(fromRow));
   } catch (e) {
-    res.status(500).json({ error: e.message || 'Save failed' });
+    res.status(500).json({ error: e.message || 'Could not load the register' });
   }
 };
