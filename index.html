@@ -800,12 +800,16 @@ function collectData(){
 async function submitCard(){
   const data = collectData();
   const btn = document.getElementById('btnNext');
+  const originalLabel = btn.textContent;
   btn.disabled = true; btn.textContent = 'Saving…';
+  const controller = new AbortController();
+  const timeoutId = setTimeout(()=>controller.abort(), 15000);
   try{
     const res = await fetch('/api/submit', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ id: editingId, ...data })
+      body: JSON.stringify({ id: editingId, ...data }),
+      signal: controller.signal
     });
     const out = await res.json();
     if(!res.ok) throw new Error(out.error || 'Save failed');
@@ -815,8 +819,14 @@ async function submitCard(){
     document.getElementById('successView').classList.remove('hidden');
   }catch(e){
     console.error(e);
-    showToast(e.message || 'Could not save — check your connection and try again.', true);
+    if(e.name === 'AbortError'){
+      showToast('The server took too long to respond. Check your connection and try again.', true);
+    } else {
+      showToast(e.message || 'Could not save — check your connection and try again.', true);
+    }
+    btn.textContent = originalLabel;
   }finally{
+    clearTimeout(timeoutId);
     btn.disabled = false;
   }
 }
