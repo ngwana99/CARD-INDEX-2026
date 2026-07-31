@@ -8,6 +8,8 @@ const COLUMN_MAP = {
   employmentStatus: 'employment_status', dateEntryPublicService: 'date_entry_public_service',
   certAccessPublicService: 'cert_access_public_service', lastCertificate: 'last_certificate',
   certDegreeLevel: 'cert_degree_level', grade: 'grade',
+  longevityOfService: 'longevity_of_service', echelon: 'echelon',
+  salaryIndex: 'salary_index', careerIndex: 'career_index', weeklyWorkload: 'weekly_workload',
   regionWork: 'region_work', divisionWork: 'division_work', subdivisionWork: 'subdivision_work',
   placeOfWork: 'place_of_work', dutyPost: 'duty_post', dateEntryPresentPosition: 'date_entry_present_position',
   phone: 'phone', whatsapp: 'whatsapp',
