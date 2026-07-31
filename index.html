@@ -418,6 +418,15 @@ footer a.wa-line{color:#9BC9AE; text-decoration:none; font-size:12.5px}
                 <div class="field"><label>Certificate at degree level <span class="req">*</span><span class="help" tabindex="0">?<span class="tip">Your qualification restated at its academic/degree equivalent, e.g. DIPET II, Licence, Master's.</span></span></label><input required name="certDegreeLevel" placeholder="e.g. DIPET II"></div>
                 <div class="field"><label>Grade <span class="req">*</span><span class="help" tabindex="0">?<span class="tip">Your professional grade / category code, e.g. PLET, PLEG, PCEG, PCC.</span></span></label><input required name="grade" placeholder="e.g. PLET"></div>
               </div>
+              <div class="grid2">
+                <div class="field"><label>Longevity of service <span class="help" tabindex="0">?<span class="tip">Your total length of service in the public service, in complete years — counted from your date of entry into public service.</span></span></label><input name="longevityOfService" placeholder="e.g. 18 years"></div>
+                <div class="field"><label>Échelon <span class="help" tabindex="0">?<span class="tip">Your current échelon (step) within your grade on the salary scale, e.g. 1st, 2nd, 3rd…</span></span></label><input name="echelon" placeholder="e.g. 3rd"></div>
+              </div>
+              <div class="grid2">
+                <div class="field"><label>Salary index <span class="help" tabindex="0">?<span class="tip">The salary index (indice de solde) shown on your latest pay voucher / payslip.</span></span></label><input name="salaryIndex" placeholder="e.g. 1035"></div>
+                <div class="field"><label>Career index <span class="help" tabindex="0">?<span class="tip">Your career index — the index number tied to your grade and échelon on the civil-service salary scale.</span></span></label><input name="careerIndex" placeholder="e.g. 750"></div>
+              </div>
+              <div class="field"><label>Weekly workload <span class="help" tabindex="0">?<span class="tip">Your total teaching hours per week, as assigned on your timetable.</span></span></label><input name="weeklyWorkload" placeholder="e.g. 18 hours/week"></div>
             </div>
 
             <!-- STEP 3: Current post -->
@@ -562,7 +571,7 @@ footer a.wa-line{color:#9BC9AE; text-decoration:none; font-size:12.5px}
 const STEPS = [
   {key:'identity', label:'A · Identity', fields:['fullName','matNo','dob','pob','sex','maritalStatus','ethnicGroup','firstLanguage']},
   {key:'origin', label:'B · Origin', fields:['regionOrigin','divisionOrigin','subdivisionOrigin']},
-  {key:'service', label:'C · Service record', fields:['employmentStatus','dateEntryPublicService','certAccessPublicService','lastCertificate','certDegreeLevel','grade']},
+  {key:'service', label:'C · Service record', fields:['employmentStatus','dateEntryPublicService','certAccessPublicService','lastCertificate','certDegreeLevel','grade','longevityOfService','echelon','salaryIndex','careerIndex','weeklyWorkload']},
   {key:'post', label:'D · Current post', fields:['regionWork','divisionWork','subdivisionWork','placeOfWork','dutyPost','dateEntryPresentPosition']},
   {key:'contact', label:'E · Contact', fields:['phone','whatsapp']},
   {key:'redeploy', label:'F · Redeployment', fields:['redeployed','placeRedeployment','divisionRedeployment','subdivisionRedeployment']},
@@ -575,14 +584,16 @@ const FIELD_LABELS = {
   employmentStatus:'Status', dateEntryPublicService:'Date of entry into public service',
   certAccessPublicService:'Certificate to access public service', lastCertificate:'Last certificate',
   certDegreeLevel:'Certificate at degree level', grade:'Grade',
+  longevityOfService:'Longevity of service', echelon:'Échelon',
+  salaryIndex:'Salary index', careerIndex:'Career index', weeklyWorkload:'Weekly workload',
   regionWork:'Region of work', divisionWork:'Division of work', subdivisionWork:'Sub-division of work',
   placeOfWork:'Place of work', dutyPost:'Duty post', dateEntryPresentPosition:'Date of entry into present position',
   phone:'Telephone number', whatsapp:'WhatsApp number',
   redeployed:'Redeployed', placeRedeployment:'Place of redeployment',
   divisionRedeployment:'Division of redeployment', subdivisionRedeployment:'Sub-division of redeployment',
 };
-const XLSX_ORDER = ['fullName','matNo','dob','pob','sex','maritalStatus','ethnicGroup','firstLanguage','regionOrigin','divisionOrigin','subdivisionOrigin','employmentStatus','dateEntryPublicService','certAccessPublicService','lastCertificate','certDegreeLevel','grade','regionWork','divisionWork','subdivisionWork','placeOfWork','dutyPost','dateEntryPresentPosition','phone','whatsapp','redeployed','placeRedeployment','divisionRedeployment','subdivisionRedeployment'];
-const XLSX_HEADERS = ['S/N','NAME','MAT. NO or ECI','DATE OF BIRTH','PLACE OF BIRTH','SEX','MARITAL STATUS','ETHNIC GROUP','FIRST LANGUAGE','REGION OF ORIGIN','DIVISION OF ORIGIN','SUB DIVISION OF ORIGIN','PERMANENT(P) OR PART-TIME(PT)','DATE OF ENTRY INTO PUB. SERVICE','CERTIFICATE TO GET ACCESS INTO PUB. SER.','LAST CERTIFICATE','CERTIFICATE ACQUIRED AT DEGREE LEVEL','GRADE','REGION OF WORK','DIVISION OF WORK','SUB DIVISION OF WORK','PLACE OF WORK','DUTY POST','DATE OF ENTRY INTO PRESENT POSITION','TELEPHONE NUMBER','WHATSAPP NUMBER','REDEPLOYED','PLACE OF REDEPLOYMENT','DIVISION OF REDEPLOYMENT','SUBDIVISION OF REDEPLOYMENT'];
+const XLSX_ORDER = ['fullName','matNo','dob','pob','sex','maritalStatus','ethnicGroup','firstLanguage','regionOrigin','divisionOrigin','subdivisionOrigin','employmentStatus','dateEntryPublicService','certAccessPublicService','lastCertificate','certDegreeLevel','grade','longevityOfService','echelon','salaryIndex','careerIndex','weeklyWorkload','regionWork','divisionWork','subdivisionWork','placeOfWork','dutyPost','dateEntryPresentPosition','phone','whatsapp','redeployed','placeRedeployment','divisionRedeployment','subdivisionRedeployment'];
+const XLSX_HEADERS = ['S/N','NAME','MAT. NO or ECI','DATE OF BIRTH','PLACE OF BIRTH','SEX','MARITAL STATUS','ETHNIC GROUP','FIRST LANGUAGE','REGION OF ORIGIN','DIVISION OF ORIGIN','SUB DIVISION OF ORIGIN','PERMANENT(P) OR PART-TIME(PT)','DATE OF ENTRY INTO PUB. SERVICE','CERTIFICATE TO GET ACCESS INTO PUB. SER.','LAST CERTIFICATE','CERTIFICATE ACQUIRED AT DEGREE LEVEL','GRADE','LONGEVITY OF SERVICE','ECHELON','SALARY INDEX','CAREER INDEX','WEEKLY WORKLOAD','REGION OF WORK','DIVISION OF WORK','SUB DIVISION OF WORK','PLACE OF WORK','DUTY POST','DATE OF ENTRY INTO PRESENT POSITION','TELEPHONE NUMBER','WHATSAPP NUMBER','REDEPLOYED','PLACE OF REDEPLOYMENT','DIVISION OF REDEPLOYMENT','SUBDIVISION OF REDEPLOYMENT'];
 
 /* ---------------- Date-of-X selectors (day / month grouped-by-decade year) ---------------- */
 const CUR_YEAR = new Date().getFullYear();
