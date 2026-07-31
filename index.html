@@ -4,6 +4,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GHS Mbonjo Limbe — Staff Card Index</title>
+<meta name="description" content="Fill your GHS Mbonjo Limbe staff card once, online — for the South West Regional Personnel Card Index update. Deadline: 31 July 2026.">
+
+<!-- Open Graph / Facebook / WhatsApp -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://card-index-2026.vercel.app/">
+<meta property="og:title" content="GHS Mbonjo Limbe — Staff Card Index">
+<meta property="og:description" content="Every teacher, one digital card. Fill your GHS Mbonjo Limbe staff card once, online — for the South West Regional Personnel Card Index update. Deadline: 31 July 2026.">
+<meta property="og:image" content="https://card-index-2026.vercel.app/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_GB">
+<meta property="og:site_name" content="GHS Mbonjo Limbe Staff Card Index">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://card-index-2026.vercel.app/">
+<meta name="twitter:title" content="GHS Mbonjo Limbe — Staff Card Index">
+<meta name="twitter:description" content="Every teacher, one digital card. Fill your GHS Mbonjo Limbe staff card once, online for the South West Regional Personnel Card Index update.">
+<meta name="twitter:image" content="https://card-index-2026.vercel.app/og-image.jpg">
+
+<meta name="theme-color" content="#16233B">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -30,6 +51,13 @@ h1,h2,h3,.display{font-family:'Fraunces',serif; letter-spacing:-.01em}
 a{color:inherit}
 .wrap{max-width:980px; margin:0 auto; padding:0 20px}
 ::selection{background:var(--gold); color:var(--navy-dk)}
+@media(max-width:480px){
+  .wrap{padding:0 14px}
+  section{padding:26px 0}
+  .step-body{padding:22px 16px 8px}
+  .step-footer{padding:14px 16px 22px}
+  .hint-strip{padding:12px 16px}
+}
 
 /* ---------- HEADER ---------- */
 header.top{
@@ -52,6 +80,11 @@ header.top::after{
 .top-text .eyebrow{font-family:'JetBrains Mono',monospace; font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--gold); margin:0 0 4px}
 .top-text h1{margin:0; font-size:clamp(20px,3.6vw,28px); font-weight:700; line-height:1.15}
 .top-text p{margin:4px 0 0; font-size:13.5px; color:#C9D2E3}
+@media(max-width:420px){
+  .top-inner{padding:18px 14px 16px; gap:12px}
+  .top-inner img{width:48px; height:48px}
+  .notice{font-size:11px; padding:9px 14px; line-height:1.4}
+}
 
 .notice{
   background:var(--red); color:#fff; font-family:'JetBrains Mono',monospace;
@@ -89,6 +122,9 @@ header.top::after{
 .idxcard{
   position:absolute; width:270px; background:var(--paper); border:1px solid var(--line);
   border-radius:4px 10px 10px 4px; box-shadow:var(--shadow); padding:16px 16px 14px 30px;
+}
+@media(max-width:400px){
+  .card-stack{height:250px; transform:scale(.82); transform-origin:top left; margin-bottom:-46px}
 }
 .idxcard::before{
   content:""; position:absolute; left:10px; top:50%; transform:translateY(-50%);
@@ -139,6 +175,13 @@ section{padding:36px 0}
   font-family:'Inter',sans-serif; font-size:14.5px; background:#fff; color:var(--ink);
 }
 .field input:focus, .field select:focus{outline:none; border-color:var(--green); box-shadow:0 0 0 3px rgba(14,107,52,.14)}
+.date-select{display:grid; grid-template-columns:1fr 1.4fr 1.3fr; gap:8px}
+.date-select select{
+  width:100%; padding:11px 8px; border:1.5px solid var(--line); border-radius:var(--r-sm);
+  font-family:'Inter',sans-serif; font-size:14px; background:#fff; color:var(--ink);
+}
+.date-select select:invalid{color:var(--ink-soft)}
+@media(max-width:360px){.date-select{gap:6px}.date-select select{font-size:12.5px; padding:11px 4px}}
 .grid2{display:grid; grid-template-columns:1fr 1fr; gap:0 20px}
 @media(max-width:600px){.grid2{grid-template-columns:1fr}}
 .help{
@@ -147,11 +190,27 @@ section{padding:36px 0}
   cursor:help; flex:none;
 }
 .help .tip{
-  display:none; position:absolute; z-index:20; bottom:22px; left:0; width:240px;
-  background:var(--navy-dk); color:#EAF0FA; font-size:12px; font-weight:400; line-height:1.45;
-  padding:10px 12px; border-radius:8px; box-shadow:var(--shadow);
+  /* Content source only — the visible popover is #helpPop below, positioned by JS
+     so it always stays fully on-screen (this fixed CSS anchor was getting clipped
+     on narrow phones). */
+  display:none !important;
 }
-.help:hover .tip, .help:focus .tip{display:block}
+/* Shared mobile-safe tooltip popover — replaces the anchored .tip on touch/narrow
+   screens so it can never be clipped by a field's edge or the viewport edge. */
+#helpPop{
+  display:none; position:fixed; z-index:400; max-width:calc(100vw - 32px); width:280px;
+  background:var(--navy-dk); color:#EAF0FA; font-size:13px; font-weight:400; line-height:1.5;
+  padding:12px 14px; border-radius:10px; box-shadow:var(--shadow); left:50%; transform:translateX(-50%);
+}
+#helpPop.show{display:block}
+#helpPop::before{
+  content:""; position:absolute; left:50%; transform:translateX(-50%);
+  border:7px solid transparent;
+}
+#helpPop.arrow-top::before{top:-13px; border-bottom-color:var(--navy-dk)}
+#helpPop.arrow-bottom::before{bottom:-13px; border-top-color:var(--navy-dk)}
+#helpPopBg{display:none; position:fixed; inset:0; z-index:399; background:transparent}
+#helpPopBg.show{display:block}
 .checkline{display:flex; align-items:center; gap:8px; font-size:13px; color:var(--ink-soft); margin:-8px 0 18px}
 .step-footer{display:flex; justify-content:space-between; align-items:center; padding:16px 26px 26px; gap:10px; flex-wrap:wrap}
 .hint-strip{
@@ -193,6 +252,11 @@ section{padding:36px 0}
 }
 .fab svg{width:20px; height:20px; flex:none}
 .fab span.sub{display:block; font-size:10.5px; font-weight:400; color:#DFF6E8}
+@media(max-width:480px){
+  .fab{right:12px; bottom:12px; padding:12px; border-radius:50%}
+  .fab span{display:none}
+  #adminBtn{left:12px; bottom:12px; font-size:9.5px; padding:6px 10px}
+}
 
 /* admin */
 #adminBtn{position:fixed; left:16px; bottom:16px; font-family:'JetBrains Mono',monospace; font-size:10.5px; color:var(--ink-soft);
@@ -211,6 +275,10 @@ table.roster th{background:var(--navy); color:#fff; position:sticky; top:0; font
 table.roster tbody tr:nth-child(even){background:#F6F0DC}
 .admin-toolbar{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:14px}
 .admin-toolbar input{padding:9px 12px; border:1.5px solid var(--line); border-radius:8px; font-size:13px; flex:1; min-width:180px}
+@media(max-width:480px){
+  .modal-body{padding:16px}
+  .admin-toolbar input{min-width:100%}
+}
 .pill{background:var(--gold); color:var(--navy-dk); font-family:'JetBrains Mono',monospace; font-size:12px; padding:5px 12px; border-radius:999px; font-weight:600}
 
 /* footer */
@@ -295,10 +363,12 @@ footer a.wa-line{color:#9BC9AE; text-decoration:none; font-size:12.5px}
               <p class="section-sub">Basic personal identification, exactly as on your certificates.</p>
               <div class="grid2">
                 <div class="field"><label>Full name <span class="req">*</span></label><input required name="fullName" placeholder="e.g. Ngwayi Sandra"></div>
-                <div class="field"><label>Matricule No. or ECI <span class="req">*</span><span class="help">?<span class="tip">Your Public Service Matricule Number. If you don't have one yet, enter your ECI (Employee Card Identifier / recruitment file number) instead.</span></span></label><input required name="matNo" placeholder="e.g. A-141715 or ECI"></div>
+                <div class="field"><label>Matricule No. or ECI <span class="req">*</span><span class="help" tabindex="0">?<span class="tip">Your Public Service Matricule Number. If you don't have one yet, enter your ECI instead — ECI stands for "En Cours d'Intégration" (Awaiting Integration), meaning your integration into the public service payroll is still being processed.</span></span></label><input required name="matNo" placeholder="e.g. A-141715 or ECI"></div>
               </div>
               <div class="grid2">
-                <div class="field"><label>Date of birth <span class="req">*</span></label><input required type="date" name="dob"></div>
+                <div class="field"><label>Date of birth <span class="req">*</span></label>
+                  <div class="date-select" data-field="dob"></div>
+                  <input type="hidden" required name="dob"></div>
                 <div class="field"><label>Place of birth <span class="req">*</span></label><input required name="pob" placeholder="e.g. Kumba"></div>
               </div>
               <div class="grid2">
@@ -309,7 +379,7 @@ footer a.wa-line{color:#9BC9AE; text-decoration:none; font-size:12.5px}
               </div>
               <div class="grid2">
                 <div class="field"><label>Ethnic group <span class="req">*</span></label><input required name="ethnicGroup" placeholder="e.g. Metta, Eton, Bamileke…"></div>
-                <div class="field"><label>First language <span class="req">*</span><span class="help">?<span class="tip">Your first spoken/official language — usually English or French.</span></span></label>
+                <div class="field"><label>First language <span class="req">*</span><span class="help" tabindex="0">?<span class="tip">Your first spoken/official language — usually English or French.</span></span></label>
                   <select required name="firstLanguage"><option value="">Select…</option><option>English</option><option>French</option><option>Other</option></select></div>
               </div>
             </div>
@@ -334,17 +404,19 @@ footer a.wa-line{color:#9BC9AE; text-decoration:none; font-size:12.5px}
               <div class="section-head"><span class="num">C</span><h3>Public Service Record</h3></div>
               <p class="section-sub">How and when you entered the public service, and your qualifications.</p>
               <div class="grid2">
-                <div class="field"><label>Status <span class="req">*</span><span class="help">?<span class="tip">Permanent (P): you hold a substantive civil-service post. Part-Time (PT): you are on a part-time / vacation contract.</span></span></label>
+                <div class="field"><label>Status <span class="req">*</span><span class="help" tabindex="0">?<span class="tip">Permanent (P): you hold a substantive civil-service post. Part-Time (PT): you are on a part-time / vacation contract.</span></span></label>
                   <select required name="employmentStatus"><option value="">Select…</option><option value="P">Permanent (P)</option><option value="PT">Part-Time (PT)</option></select></div>
-                <div class="field"><label>Date of entry into public service <span class="req">*</span></label><input required type="date" name="dateEntryPublicService"></div>
+                <div class="field"><label>Date of entry into public service <span class="req">*</span></label>
+                  <div class="date-select" data-field="dateEntryPublicService"></div>
+                  <input type="hidden" required name="dateEntryPublicService"></div>
               </div>
               <div class="grid2">
-                <div class="field"><label>Certificate to access public service <span class="req">*</span><span class="help">?<span class="tip">The certificate/diploma you held the day you were first recruited into public service, e.g. DIPET II, DIPES II, GCE A-Level.</span></span></label><input required name="certAccessPublicService" placeholder="e.g. DIPET II"></div>
-                <div class="field"><label>Last certificate obtained <span class="req">*</span><span class="help">?<span class="tip">Your most recent certificate or diploma, even if it hasn't yet been used for reclassification.</span></span></label><input required name="lastCertificate" placeholder="e.g. DIPET II"></div>
+                <div class="field"><label>Certificate to access public service <span class="req">*</span><span class="help" tabindex="0">?<span class="tip">The certificate/diploma you held the day you were first recruited into public service, e.g. DIPET II, DIPES II, GCE A-Level.</span></span></label><input required name="certAccessPublicService" placeholder="e.g. DIPET II"></div>
+                <div class="field"><label>Last certificate obtained <span class="req">*</span><span class="help" tabindex="0">?<span class="tip">Your most recent certificate or diploma, even if it hasn't yet been used for reclassification.</span></span></label><input required name="lastCertificate" placeholder="e.g. DIPET II"></div>
               </div>
               <div class="grid2">
-                <div class="field"><label>Certificate at degree level <span class="req">*</span><span class="help">?<span class="tip">Your qualification restated at its academic/degree equivalent, e.g. DIPET II, Licence, Master's.</span></span></label><input required name="certDegreeLevel" placeholder="e.g. DIPET II"></div>
-                <div class="field"><label>Grade <span class="req">*</span><span class="help">?<span class="tip">Your professional grade / category code, e.g. PLET, PLEG, PCEG, PCC.</span></span></label><input required name="grade" placeholder="e.g. PLET"></div>
+                <div class="field"><label>Certificate at degree level <span class="req">*</span><span class="help" tabindex="0">?<span class="tip">Your qualification restated at its academic/degree equivalent, e.g. DIPET II, Licence, Master's.</span></span></label><input required name="certDegreeLevel" placeholder="e.g. DIPET II"></div>
+                <div class="field"><label>Grade <span class="req">*</span><span class="help" tabindex="0">?<span class="tip">Your professional grade / category code, e.g. PLET, PLEG, PCEG, PCC.</span></span></label><input required name="grade" placeholder="e.g. PLET"></div>
               </div>
             </div>
 
@@ -361,11 +433,13 @@ footer a.wa-line{color:#9BC9AE; text-decoration:none; font-size:12.5px}
                 <div class="field"><label>Place of work <span class="req">*</span></label><input required name="placeOfWork" value="GHS Mbonjo Limbe"></div>
               </div>
               <div class="grid2">
-                <div class="field"><label>Duty post <span class="req">*</span><span class="help">?<span class="tip">Your function at post: Principal, Vice Principal, SDM, Discipline Master, HOD, Teacher, etc.</span></span></label>
+                <div class="field"><label>Duty post <span class="req">*</span><span class="help" tabindex="0">?<span class="tip">Your function at post: Principal, Vice Principal, SDM, Discipline Master, HOD, Teacher, etc.</span></span></label>
                   <select required name="dutyPost"><option value="">Select…</option>
                   <option>Principal</option><option>Vice Principal</option><option>SDM</option><option>Discipline Master</option>
                   <option>HOD</option><option>Teacher</option><option>Bursar</option><option>Other</option></select></div>
-                <div class="field"><label>Date of entry into present position <span class="req">*</span></label><input required type="date" name="dateEntryPresentPosition"></div>
+                <div class="field"><label>Date of entry into present position <span class="req">*</span></label>
+                  <div class="date-select" data-field="dateEntryPresentPosition"></div>
+                  <input type="hidden" required name="dateEntryPresentPosition"></div>
               </div>
             </div>
 
@@ -384,7 +458,7 @@ footer a.wa-line{color:#9BC9AE; text-decoration:none; font-size:12.5px}
             <div class="step-body hidden" data-step="5">
               <div class="section-head"><span class="num">F</span><h3>Redeployment</h3></div>
               <p class="section-sub">Only fill the rest of this section if you have been redeployed.</p>
-              <div class="field" style="max-width:280px"><label>Redeployed <span class="req">*</span><span class="help">?<span class="tip">Have you been transferred (redeployed) from a previous post to your current one?</span></span></label>
+              <div class="field" style="max-width:280px"><label>Redeployed <span class="req">*</span><span class="help" tabindex="0">?<span class="tip">Have you been transferred (redeployed) from a previous post to your current one?</span></span></label>
                 <select required name="redeployed" id="redeployedSel"><option value="">Select…</option><option value="NO">No</option><option value="YES">Yes</option></select></div>
               <div id="redeployFields" class="hidden">
                 <div class="field"><label>Place of redeployment</label><input name="placeRedeployment" placeholder="Previous school/post"></div>
@@ -473,6 +547,8 @@ footer a.wa-line{color:#9BC9AE; text-decoration:none; font-size:12.5px}
   </div>
 </div>
 
+<div id="helpPopBg"></div>
+<div id="helpPop"></div>
 <div id="toast"></div>
 
 <footer>
@@ -508,6 +584,117 @@ const FIELD_LABELS = {
 const XLSX_ORDER = ['fullName','matNo','dob','pob','sex','maritalStatus','ethnicGroup','firstLanguage','regionOrigin','divisionOrigin','subdivisionOrigin','employmentStatus','dateEntryPublicService','certAccessPublicService','lastCertificate','certDegreeLevel','grade','regionWork','divisionWork','subdivisionWork','placeOfWork','dutyPost','dateEntryPresentPosition','phone','whatsapp','redeployed','placeRedeployment','divisionRedeployment','subdivisionRedeployment'];
 const XLSX_HEADERS = ['S/N','NAME','MAT. NO or ECI','DATE OF BIRTH','PLACE OF BIRTH','SEX','MARITAL STATUS','ETHNIC GROUP','FIRST LANGUAGE','REGION OF ORIGIN','DIVISION OF ORIGIN','SUB DIVISION OF ORIGIN','PERMANENT(P) OR PART-TIME(PT)','DATE OF ENTRY INTO PUB. SERVICE','CERTIFICATE TO GET ACCESS INTO PUB. SER.','LAST CERTIFICATE','CERTIFICATE ACQUIRED AT DEGREE LEVEL','GRADE','REGION OF WORK','DIVISION OF WORK','SUB DIVISION OF WORK','PLACE OF WORK','DUTY POST','DATE OF ENTRY INTO PRESENT POSITION','TELEPHONE NUMBER','WHATSAPP NUMBER','REDEPLOYED','PLACE OF REDEPLOYMENT','DIVISION OF REDEPLOYMENT','SUBDIVISION OF REDEPLOYMENT'];
 
+/* ---------------- Date-of-X selectors (day / month grouped-by-decade year) ---------------- */
+const CUR_YEAR = new Date().getFullYear();
+const DATE_RANGES = {
+  dob: {min: CUR_YEAR-80, max: CUR_YEAR-15},
+  dateEntryPublicService: {min: CUR_YEAR-60, max: CUR_YEAR},
+  dateEntryPresentPosition: {min: CUR_YEAR-60, max: CUR_YEAR},
+};
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+function buildDateSelect(wrap){
+  const field = wrap.dataset.field;
+  const range = DATE_RANGES[field] || {min: CUR_YEAR-80, max: CUR_YEAR};
+  const hidden = wrap.parentElement.querySelector('input[type="hidden"][name="'+field+'"]');
+
+  const daySel = document.createElement('select'); daySel.dataset.part='day';
+  const monthSel = document.createElement('select'); monthSel.dataset.part='month';
+  const yearSel = document.createElement('select'); yearSel.dataset.part='year';
+
+  monthSel.innerHTML = '<option value="">Month</option>' +
+    MONTHS.map((m,i)=>'<option value="'+String(i+1).padStart(2,'0')+'">'+m+'</option>').join('');
+
+  // Years grouped into decades (optgroups) — most recent decade first, so someone
+  // scanning for their birth year can jump straight to the right block instead of
+  // scrolling a day-by-day calendar back 30+ years.
+  let years = [];
+  for(let y=range.min; y<=range.max; y++) years.push(y);
+  years.reverse();
+  let html = '<option value="">Year</option>';
+  let openGroup = null;
+  years.forEach(y=>{
+    const decadeLabel = (Math.floor(y/10)*10) + 's';
+    if(decadeLabel !== openGroup){
+      if(openGroup !== null) html += '</optgroup>';
+      html += '<optgroup label="'+decadeLabel+'">';
+      openGroup = decadeLabel;
+    }
+    html += '<option value="'+y+'">'+y+'</option>';
+  });
+  if(openGroup !== null) html += '</optgroup>';
+  yearSel.innerHTML = html;
+
+  function fillDays(){
+    const y = parseInt(yearSel.value,10), m = parseInt(monthSel.value,10);
+    const daysInMonth = (y && m) ? new Date(y, m, 0).getDate() : 31;
+    const prev = daySel.value;
+    daySel.innerHTML = '<option value="">Day</option>' +
+      Array.from({length:daysInMonth}, (_,i)=>{
+        const d = String(i+1).padStart(2,'0');
+        return '<option value="'+d+'">'+(i+1)+'</option>';
+      }).join('');
+    if(prev && parseInt(prev,10) <= daysInMonth) daySel.value = prev;
+  }
+  fillDays();
+
+  function sync(){
+    if(daySel.value && monthSel.value && yearSel.value){
+      hidden.value = yearSel.value+'-'+monthSel.value+'-'+daySel.value;
+    } else {
+      hidden.value = '';
+    }
+  }
+  monthSel.addEventListener('change', ()=>{ fillDays(); sync(); });
+  yearSel.addEventListener('change', ()=>{ fillDays(); sync(); });
+  daySel.addEventListener('change', sync);
+
+  wrap.appendChild(daySel); wrap.appendChild(monthSel); wrap.appendChild(yearSel);
+}
+document.querySelectorAll('.date-select').forEach(buildDateSelect);
+
+/* ---------------- Mobile-safe help popover ---------------- */
+let activeHelp = null;
+function showHelpPop(el){
+  const tipEl = el.querySelector('.tip');
+  const pop = document.getElementById('helpPop');
+  const bg = document.getElementById('helpPopBg');
+  pop.textContent = tipEl ? tipEl.textContent.trim() : '';
+  pop.classList.remove('arrow-top','arrow-bottom');
+  bg.classList.add('show'); pop.classList.add('show');
+  requestAnimationFrame(()=>{
+    const rect = el.getBoundingClientRect();
+    const popRect = pop.getBoundingClientRect();
+    const margin = 16;
+    let top = rect.top - popRect.height - 12;
+    let arrow = 'arrow-bottom';
+    if(top < margin){ top = rect.bottom + 12; arrow = 'arrow-top'; }
+    top = Math.max(margin, Math.min(top, window.innerHeight - popRect.height - margin));
+    let left = rect.left + rect.width/2;
+    const halfW = popRect.width/2;
+    left = Math.max(margin+halfW, Math.min(left, window.innerWidth - margin - halfW));
+    pop.style.top = top+'px'; pop.style.left = left+'px';
+    pop.classList.add(arrow);
+  });
+}
+function closeHelp(){
+  activeHelp = null;
+  document.getElementById('helpPop').classList.remove('show');
+  document.getElementById('helpPopBg').classList.remove('show');
+}
+function toggleHelp(el){
+  if(activeHelp === el){ closeHelp(); return; }
+  activeHelp = el; showHelpPop(el);
+}
+document.querySelectorAll('.help').forEach(el=>{
+  el.addEventListener('click', e=>{ e.stopPropagation(); toggleHelp(el); });
+  el.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggleHelp(el); } });
+});
+document.getElementById('helpPopBg').addEventListener('click', closeHelp);
+document.addEventListener('scroll', closeHelp, true);
+window.addEventListener('resize', closeHelp);
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeHelp(); });
+
 let step = 0;
 let editingId = null;
 const form = document.getElementById('cardForm');
@@ -541,7 +728,19 @@ function goTo(i){
 function validateUpTo(i){
   const body = document.querySelector('.step-body[data-step="'+i+'"]');
   const reqs = body.querySelectorAll('[required]');
-  for(const el of reqs){ if(!el.value){ el.focus(); showToast('Please fill "'+ (FIELD_LABELS[el.name]||el.name) +'"', true); return false; } }
+  for(const el of reqs){
+    if(!el.value){
+      let focusTarget = el;
+      if(el.type==='hidden'){
+        const wrap = el.parentElement.querySelector('.date-select');
+        const firstEmptySel = wrap && Array.from(wrap.querySelectorAll('select')).find(s=>!s.value);
+        if(firstEmptySel) focusTarget = firstEmptySel;
+      }
+      focusTarget.focus();
+      showToast('Please fill "'+ (FIELD_LABELS[el.name]||el.name) +'"', true);
+      return false;
+    }
+  }
   return true;
 }
 document.getElementById('btnNext').onclick = ()=>{
@@ -614,6 +813,8 @@ async function submitCard(){
 function resetForm(){
   form.reset();
   editingId = null;
+  document.querySelectorAll('.date-select select').forEach(s=>{ s.value=''; });
+  document.querySelectorAll('input[type="hidden"][name="dob"], input[type="hidden"][name="dateEntryPublicService"], input[type="hidden"][name="dateEntryPresentPosition"]').forEach(h=>{ h.value=''; });
   document.getElementById('successView').classList.add('hidden');
   document.getElementById('formView').classList.remove('hidden');
   form.regionWork.value='South West'; form.divisionWork.value='Fako';
